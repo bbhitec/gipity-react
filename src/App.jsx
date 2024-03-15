@@ -5,15 +5,15 @@ import './App.css'
 function App() {
   const [count, setCount] = useState(0)
 
-  const [message, setMessage] = useState(null)
-  const [inputValue, setInputValue] = useState(null)
+  const [message, setMessage] = useState("response goes here")
+  const [inputValue, setInputValue] = useState("tell me a random joke")
 
   // message requests from backend
   const getMessages = async () => {
     const options = {
       method: "POST",
       body: JSON.stringify({
-        message: "hello, whatsup?"
+        message: inputValue
       }),
       headers: {
         "Content-Type": "application/json"
@@ -23,7 +23,7 @@ function App() {
       const response = await fetch('http://localhost:8000/completions', options)
       const data = await response.json()
       console.log(data)
-      setMessage(data.choises[0].message)
+      setMessage(data.choices[0].message)
     } catch (error) {
       console.log(error)
     }
@@ -39,6 +39,9 @@ function App() {
         </a>
       </div>
       <h1>gipity</h1>
+      <p className="read-the-docs">
+        {message.content}
+      </p>
       <div className="card">
         {/* <button onClick={() => setCount((count) => count + 1)}> */}
         <p>
@@ -49,13 +52,10 @@ function App() {
           />
         </p>
         <button onClick={getMessages}>
-          Test
+          Send
           {/* count is {count} */}
         </button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
